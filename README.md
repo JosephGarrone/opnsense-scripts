@@ -13,3 +13,22 @@ Some scripts may have pre-requisite packages that have to be added to the base i
 | Script | Description | Example Usage |
 | ------ | ----------- | ----- |
 | update-caddy-access-list | A script to be used in a CRON to regularly update an entry within a Caddy HTTP Access list. Intended to somewhat allow "Dynamic DNS" access. | Via crontab to run every 5 minutes<br/> ```*/5 * * * * /usr/local/bin/bash /opt/opnsense-scripts/update-caddy-access-list.sh -ed some.domain.example -al some-access-list -key "some-key" -secret "some-secret" -url https://<your-opn-sense>/api```
+
+# Getting started
+I suggest you install `git`
+```
+pkg install git
+```
+And that you make `vim` your default editor (exit and re-create your SSH session to take effect)
+```
+perl -pi -e 's/\s*setenv\s+EDITOR\s+vi\s*/setenv  EDITOR  vim\n/' ~/.cshrc
+```
+And then create `opt` and move there
+```
+mkdir /opt
+cd /opt
+```
+And then clone these scripts
+```
+git clone https://github.com/JosephGarrone/opnsense-scripts
+```
