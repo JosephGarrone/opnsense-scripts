@@ -88,7 +88,7 @@ update_access_list() {
 
 # Get the script location
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
-pushd $SCRIPT_DIR 
+pushd $SCRIPT_DIR > /dev/null 2>&1
 
 # Get the current IP of the external domain
 new_ip=$(get_current_ip "$EXTERNAL_DOMAIN")
