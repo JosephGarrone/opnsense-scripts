@@ -10,6 +10,6 @@ Some scripts may have pre-requisite packages that have to be added to the base i
 
 # Scripts
 
-| Script | Description |
-| ------ | ----------- |
-| update-caddy-access-list | A script to be used in a CRON to regularly update an entry within a Caddy HTTP Access list. Intended to somewhat allow "Dynamic DNS" access.
+| Script | Description | Example Usage |
+| ------ | ----------- | ----- |
+| update-caddy-access-list | A script to be used in a CRON to regularly update an entry within a Caddy HTTP Access list. Intended to somewhat allow "Dynamic DNS" access. | Via crontab to run every 5 minutes<br/> ```*/5 * * * * /usr/local/bin/bash /opt/opnsense-scripts/update-caddy-access-list.sh -ed some.domain.example -al some-access-list -key "some-key" -secret "some-secret" -url https://<your-opn-sense>/api```
