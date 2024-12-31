@@ -86,6 +86,38 @@ update_access_list() {
   fi
 }
 
+# Validate the new config
+validate_caddy_config() {
+  result=$(curl -s -u "$OPNSENSE_API_KEY:$OPNSENSE_API_SECRET" \
+    -X GET "$OPNSENSE_API_URL/caddy/service/validate")
+
+    
+  expected_result='{"status":"ok","message":"Caddy configuration is valid."}'
+  if [[ "$(echo "$result" | jq -c .)" == "$(echo "$expected_result" | jq -c .)" ]]; then
+    return 0
+  else
+    return 1
+  fi
+}
+
+
+# Reconfigure caddy
+reconfigure_caddy() {
+  result=$(curl -s -u "$OPNSENSE_API_KEY:$OPNSENSE_API_SECRET" \
+    -X POST "$OPNSENSE_API_URL/caddy/service/reconfigure" \
+    -H 'Content-Type: application/json' \
+    -d "{}")
+
+  expected_result='{"status":"ok"}'
+  if [[ "$(echo "$result" | jq -c .)" == "$(echo "$expected_result" | jq -c .)" ]]; then
+    return 0
+  else
+    return 1
+  fi
+}
+
+
+
 # Get the script location
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 pushd $SCRIPT_DIR > /dev/null 2>&1
@@ -166,6 +198,20 @@ transformed_updated_access_list=$(echo "$updated_access_list" | jq '{
 update_response=$(update_access_list "$access_list_uuid" "$transformed_updated_access_list")
 if [[ $? -ne 0 ]]; then
   echo "[ERROR] Failed to update the access list. Exiting."
+  exit 1
+fi
+
+# Validate the configuration
+validate_config=$(validate_caddy_config)
+if [[ $? -ne 0 ]]; then
+  echo "[ERROR] Failed to validate Caddy configuration. Exiting."
+  exit 1
+fi
+
+# Reconfigure caddy
+reconfigured=$(reconfigure_caddy)
+if [[ $? -ne 0 ]]; then
+  echo "[ERROR] Failed to apply changes to Caddy configuration. Exiting."
   exit 1
 fi
 
