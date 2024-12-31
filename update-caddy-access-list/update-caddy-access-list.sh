@@ -201,12 +201,16 @@ if [[ $? -ne 0 ]]; then
   exit 1
 fi
 
+echo "[INFO] Successfully updated the access list: replaced $old_ip with $new_ip."
+
 # Validate the configuration
 validate_config=$(validate_caddy_config)
 if [[ $? -ne 0 ]]; then
   echo "[ERROR] Failed to validate Caddy configuration. Exiting."
   exit 1
 fi
+
+echo  "[INFO] Caddy configuration validated successfully."
 
 # Reconfigure caddy
 reconfigured=$(reconfigure_caddy)
@@ -215,6 +219,10 @@ if [[ $? -ne 0 ]]; then
   exit 1
 fi
 
+echo "[INFO] Configuration changes to Caddy have been applied."
+
 # Store the new IP in the file for future reference
 echo "$new_ip" > "$OLD_IP_FILE"
-echo "[INFO] Successfully updated the access list: replaced $old_ip with $new_ip."
+echo "[INFO] Old IP was saved to $OLD_IP_FILE.
+
+echo "[INFO] Successfully executed. Exiting."
