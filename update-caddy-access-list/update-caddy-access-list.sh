@@ -223,6 +223,6 @@ echo "[INFO] Configuration changes to Caddy have been applied."
 
 # Store the new IP in the file for future reference
 echo "$new_ip" > "$OLD_IP_FILE"
-echo "[INFO] Old IP was saved to $OLD_IP_FILE.
+echo "[INFO] Old IP was saved to $OLD_IP_FILE."
 
 echo "[INFO] Successfully executed. Exiting."
